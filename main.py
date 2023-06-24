@@ -1,10 +1,14 @@
 import os
 import shutil
 from pydub import AudioSegment
+from pydub.exceptions import CouldntDecodeError
 
 def get_mp3_duration(file_path):
-    audio = AudioSegment.from_file(file_path, format="mp3")
-    return len(audio) / 1000  # Duration in seconds
+    try:
+        audio = AudioSegment.from_file(file_path, format="mp3")
+        return len(audio) / 1000  # Duration in seconds
+    except CouldntDecodeError:
+        return 0  # Return 0 if the file couldn't be decoded
 
 def copy_and_rename_mp3_files(input_dir, output_dir):
     count = 1
